@@ -3,7 +3,6 @@ FROM nginx
 RUN apt-get -yq update && \
     apt-get -yq upgrade
 
-COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./allow-cloudflare-only.sh /docker-entrypoint.d/allow-cloudflare-only.sh
 
 WORKDIR /app
