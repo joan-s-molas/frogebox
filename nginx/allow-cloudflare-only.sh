@@ -15,4 +15,4 @@ cf_ips() {
 }
 
 cf_ips > allow-cloudflare.conf
-(cf_ips && echo "deny all; # deny all remaining ips") > allow-cloudflare-only.conf
+(cf_ips && echo "deny all; # deny all remaining ips") > /etc/nginx/conf.d/allow-cloudflare-only.conf

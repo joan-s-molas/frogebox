@@ -18,9 +18,10 @@ services:
       - 36881:36881/udp
     restart: unless-stopped
   proxy:
-    image: nginx
+    image: joanserra/nginx-nonroot:latest
     container_name: proxy
     ports:
       - 80:80
     volumes: 
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/allow-cloudflare-only.conf:/etc/nginx/allow-cloudflare-only.conf:ro
