@@ -19,6 +19,7 @@ services:
   proxy:
     image: joanserra/nginx-nonroot:latest
     container_name: proxy
+    restart: always
     ports:
       - 80:80
     volumes:
