@@ -24,10 +24,4 @@ services:
       - 80:80
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-  irc-client:
-    image: thelounge/thelounge:latest
-    container_name: irc-client
-    restart: always
-    volumes:
-      - ~/.thelounge:/var/opt/thelounge
 
