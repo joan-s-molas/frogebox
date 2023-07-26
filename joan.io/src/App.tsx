@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import styled, { keyframes, createGlobalStyle } from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
+import styled, { createGlobalStyle } from 'styled-components';
+import { animated } from 'react-spring';
 
-// Global styles to set the gradient background
+type Glyph = {
+  id: string;
+  char: string;
+  top: number;
+  size: number;
+  speed: number;
+  left: number;
+};
+
 const GlobalStyle = createGlobalStyle`
   body {
-    background: linear-gradient(to bottom, #020024, #74007c);
+    background: linear-gradient(#020024, #74007c);
     margin: 0;
     height: 100vh;
     width: 100vw;
@@ -16,83 +26,64 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// Define our moving div
-const MovingDiv = styled.div<{ speed: number; zIndex: number; size: number }>`
+const glyphs = ["𓆈","𓆉","𓆊","𓆋","𓆌","𓆍","𓆎","𓆏","𓆐","𓆑","𓆒","𓆘","𓆙","𓆚"];
+
+const GlyphContainer = styled(animated.div)<{size: number}>`
   position: absolute;
-  left: 0;
-  color: #33ff33; // Neon green color
-  z-index: ${props => props.zIndex};
-  font-size: ${props => props.size}em;
-  animation: ${(props) => keyframes`
-    0% {
-      transform: translateX(0%);
-      opacity: 0;
-    }
-    10% {
-      opacity: 1;
-    }
-    90% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateX(100vw);
-      opacity: 0;
-    }
-  `} ${props => props.speed}s linear infinite;
+  font-size: ${({size}) => `${size}em`};
 `;
 
-const glyphs = ["𓆈","𓆉","𓆊","𓆋","𓆌","𓆍","𓆎","𓆏","𓆐","𓆑","𓆒","𓆓","𓆔","𓆕","𓆖","𓆗","𓆘","𓆙","𓆚"];
-
-interface Glyph {
-  glyph: string;
-  size: number;
-  speed: number;
-  position: number;
-  zIndex: number;
-}
-
 const App: React.FC = () => {
-  const [randomGlyphs, setRandomGlyphs] = useState<Glyph[]>([]);
-  
-  const generateRandomGlyph = (): Glyph => {
-    const glyph = glyphs[Math.floor(Math.random() * glyphs.length)];
-    const size = Number((Math.random() * 6 + 2).toFixed(2)); // Random size between 2 and 8
-    const speed = (8 - size) + 5; // Bigger glyphs move faster
-    const position = Math.random() * (window.innerHeight - 50); // Random vertical position
-    const zIndex = Math.round(size * 10); // Bigger glyphs appear on top
-    return { glyph, size, speed, position, zIndex };
-  };
+  const [glyphsState, setGlyphs] = useState<Glyph[]>([]);
 
-  // Recalculate the glyph positions whenever the window is resized
   useEffect(() => {
-    const handleResize = () => {
-      setRandomGlyphs((glyphs) => glyphs.map(glyph => ({ ...glyph, position: Math.random() * (window.innerHeight - 50) })));
-    };
+    const interval = setInterval(() => {
+      const bias = Math.pow(Math.random(), 3); // Bias towards smaller sizes
+      const size = 2 + bias * (20 - 2); // Random size from 2em to 20em
 
-    window.addEventListener('resize', handleResize);
+      const newGlyph: Glyph = {
+        id: uuidv4(),
+        char: glyphs[Math.floor(Math.random() * glyphs.length)],
+        top: Math.random() * 100,
+        size,
+        speed: Math.random() * 5 + size / 4, // Smaller glyphs are slower
+        left: 0,
+      };
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+      setGlyphs((glyphs) => [...glyphs, newGlyph]);
+    }, 100);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setRandomGlyphs((glyphs) => [...glyphs, generateRandomGlyph()]);
-    }, 1000);
+    const interval = setInterval(() => {
+      setGlyphs((glyphs) =>
+        glyphs
+          .map((glyph) => ({
+            ...glyph,
+            left: glyph.left + glyph.speed,
+          }))
+          .filter((glyph) => glyph.left < 100)
+      );
+    }, 50);
 
-    return () => clearInterval(intervalId); // Clean up on unmount
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="App">
+    <>
       <GlobalStyle />
-      {randomGlyphs.map(({ glyph, size, speed, position, zIndex }, index) => (
-        <MovingDiv key={index} style={{ top: `${position}px` }} speed={speed} zIndex={zIndex} size={size}>
-          {glyph}
-        </MovingDiv>
+      {glyphsState.map((glyph: Glyph) => (
+        <GlyphContainer
+          key={glyph.id}
+          style={{ top: `${glyph.top}%`, left: `${glyph.left}%` }}
+          size={glyph.size}
+        >
+          {glyph.char}
+        </GlyphContainer>
       ))}
-    </div>
+    </>
   );
 };
 
