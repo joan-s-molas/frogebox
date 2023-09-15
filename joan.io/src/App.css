@@ -22,6 +22,7 @@ body {
 }
 
 .full-screen-joan {
+  font-family: 'Bebas Neue', sans-serif;
   color: white;
   font-size: 20vw; /* Adjust this value for more or less spacing between letters */
   line-height: 1;
@@ -34,3 +35,4 @@ body {
     font-size: 20vh;
   }
 }
+
