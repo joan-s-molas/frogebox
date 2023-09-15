@@ -5,7 +5,7 @@ const App: React.FC = () => {
   const [fontSize, setFontSize] = useState<number>(Math.min(window.innerHeight, window.innerWidth) / 4);
 
   const adjustFontSize = () => {
-    setFontSize(Math.min(window.innerHeight, window.innerWidth) / 4);
+    setFontSize(Math.min(window.innerHeight, window.innerWidth) / 2);
   };
 
   useEffect(() => {
