@@ -26,10 +26,10 @@ const App: React.FC = () => {
       <div className="full-screen-joan" style={{ fontSize: `${fontSize}px` }}>JOAN</div>
       <div className="underneath">
         <a href="https://github.com/joan-s-molas" target="_blank" rel="noopener noreferrer">
-        <FontAwesomeIcon icon={faGithub} style={{color: "#e03616", marginRight: "10px"}} size="xl" />
+        <FontAwesomeIcon icon={faGithub} style={{ color: '#CFD186', marginRight: "10px"}} size="xl" />
         </a>
         <a href="https://www.linkedin.com/in/joan-serra-85b1bb41/" target="_blank" rel="noopener noreferrer">
-        <FontAwesomeIcon icon={faLinkedin} style={{color: "#e03616"}} size="xl" />
+        <FontAwesomeIcon icon={faLinkedin} style={{ color: '#CFD186' }} size="xl" />
         </a>
       </div>
     </div>
