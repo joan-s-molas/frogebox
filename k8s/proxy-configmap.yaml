@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: froge
+data:
+  nginx.conf: |
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+        include mime.types;
+        default_type application/octet-stream;
+
+        keepalive_timeout 60;
+
+        log_format logging '$remote_addr - $http_x_forwarded_for [$time_local] '
+                        '"$request" $status $body_bytes_sent '
+                        '"$http_referer" "$http_user_agent"';
+        # The server blocks have been removed because the routing is now handled by the Ingress resources.
+    }

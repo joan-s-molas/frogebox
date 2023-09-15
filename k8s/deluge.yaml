@@ -1,10 +1,7 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deluge
-  labels:
-    app: deluge
+  name: deluge-deployment
 spec:
   replicas: 1
   selector:
@@ -15,15 +12,6 @@ spec:
       labels:
         app: deluge
     spec:
-      volumes:
-      - name: configuration
-        hostPath:
-          path: /home/debian/.deluge/config
-          type: Directory
-      - name: downloads
-        hostPath:
-          path: /home/debian/downloads
-          type: Directory
       containers:
       - name: deluge
         image: lscr.io/linuxserver/deluge:latest
@@ -36,16 +24,20 @@ spec:
           value: "Europe/London"
         - name: DELUGE_LOGLEVEL
           value: "error"
-        volumeMounts:
-        - mountPath: /config
-          name: configuration
-        - mountPath: /downloads
-          name: downloads
         ports:
-        - containerPort: 8112
-          name: web
         - containerPort: 36881
-          name: tcptraffic
+          protocol: TCP
         - containerPort: 36881
           protocol: UDP
-          name: udptraffic
+        volumeMounts:
+        - name: deluge-config
+          mountPath: /config
+        - name: deluge-downloads
+          mountPath: /downloads
+      volumes:
+      - name: deluge-config
+        hostPath:
+          path: /home/debian/.deluge/config
+      - name: deluge-downloads
+        hostPath:
+          path: /home/debian/downloads

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: deluge
+spec:
+  selector:
+    app: deluge
+  ports:
+  - protocol: TCP
+    name: deluge-tcp
+    port: 36881
+    targetPort: 36881
+  - protocol: UDP
+    name: deluge-udp
+    port: 36881
+    targetPort: 36881
+  type: ClusterIP
