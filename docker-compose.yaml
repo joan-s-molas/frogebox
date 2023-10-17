@@ -11,8 +11,6 @@ services:
     volumes:
       - ~/.config/code-server:/config
       - ~/dev:/config/workspace
-    ports:
-      - 8443:8443
     restart: unless-stopped
   deluge:
     image: lscr.io/linuxserver/deluge:latest
