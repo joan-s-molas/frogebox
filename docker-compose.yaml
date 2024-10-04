@@ -36,27 +36,5 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./joan.io/build:/build
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--web.external-url=/prometheus/'
-      - '--web.route-prefix=/prometheus/'
-    restart: unless-stopped
-    volumes:
-      - ./prometheus:/etc/prometheus
-      - prom_data:/prometheus
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    restart: unless-stopped
-    environment:
-      - GF_AUTH_DISABLE_LOGIN_FORM=true
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-    volumes:
-      - ./grafana/etc/grafana:/etc/grafana
-      - ./grafana/var/lib/grafana:/var/lib/grafana
 volumes:
   prom_data:
