@@ -1,5 +1,4 @@
 ---
-version: "3.8"
 services:
   code-server:
     image: lscr.io/linuxserver/code-server:latest
@@ -31,6 +30,8 @@ services:
     image: joanserra/nginx-nonroot:latest
     container_name: proxy
     restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 80:80
     volumes:
