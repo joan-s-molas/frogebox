@@ -37,6 +37,4 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./joan.io/build:/build
-      - ./topbloke.dev/build:/topbloke
-volumes:
-  prom_data:
+      - ./noopdles.com/build:/noopdles
