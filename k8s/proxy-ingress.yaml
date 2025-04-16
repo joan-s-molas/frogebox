@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: joan-ingress
+  namespace: froge
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    # Add any other annotations you might need for specific configurations
+spec:
+  rules:
+  - host: joan.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: proxy-service
+            port:
+              number: 80

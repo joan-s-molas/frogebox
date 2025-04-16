@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deluge-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deluge
+  template:
+    metadata:
+      labels:
+        app: deluge
+    spec:
+      containers:
+      - name: deluge
+        image: lscr.io/linuxserver/deluge:latest
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "Europe/London"
+        - name: DELUGE_LOGLEVEL
+          value: "error"
+        ports:
+        - containerPort: 36881
+          protocol: TCP
+        - containerPort: 36881
+          protocol: UDP
+        volumeMounts:
+        - name: deluge-config
+          mountPath: /config
+        - name: deluge-downloads
+          mountPath: /downloads
+      volumes:
+      - name: deluge-config
+        hostPath:
+          path: /home/debian/.deluge/config
+      - name: deluge-downloads
+        hostPath:
+          path: /home/debian/downloads

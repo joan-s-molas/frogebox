@@ -1,0 +1,4 @@
+helm 3.17.3
+kompose 1.35.0
+kubectl 1.32.3
+nodejs 22.14.0

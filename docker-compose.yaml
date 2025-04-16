@@ -1,0 +1,29 @@
+---
+services:
+  deluge:
+    image: lscr.io/linuxserver/deluge:latest
+    container_name: deluge
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - DELUGE_LOGLEVEL=error #optional
+    volumes:
+      - ~/.deluge/config:/config
+      - ~/downloads:/downloads
+    ports:
+      - 36881:36881
+      - 36881:36881/udp
+    restart: unless-stopped
+  proxy:
+    image: joanserra/nginx-nonroot:latest
+    container_name: proxy
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./joan.io/build:/build
+      - ./noopdles.com/build:/noopdles
