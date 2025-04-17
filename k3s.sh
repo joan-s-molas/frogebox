@@ -88,7 +88,7 @@ helm upgrade -i openebs openebs/openebs \
   --set cstor.enabled=false \
   --set zfsLocalPV.enabled=false
 
-echo "[*] Creating OpenEBS StorageClass pointing to ${OPENEBS_BASE}..."
+echo "[*] Creating OpenEBS StorageClass..."
 
 cat <<EOF | kubectl apply -f -
 apiVersion: storage.k8s.io/v1
